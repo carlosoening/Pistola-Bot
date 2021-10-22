@@ -1,5 +1,4 @@
 import discord
-import os
 from commands import commands
 from utils import checkKey
 from decouple import config
