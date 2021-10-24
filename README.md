@@ -3,7 +3,7 @@
 ## Introduction
 
 This is a bot for Discord made with Python.\
-I made this bot for practicing my python programming skills
+I made this bot for practicing my python programming skills.\
 You can use it to respond to simple commands and you can add commands to the bot as well, using the command `$add <command> <value>`
 if you are an administrator of the Discord server
 
