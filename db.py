@@ -19,9 +19,8 @@ def insert(command, value):
     else:
         return 'Command already exists'
 
-def get(command):
-    query = Query()
-    results = db.search(query.command == command)
+def get(command): 
+    results = db.search(Query().command == command)
     if (results == []):
         raise Exception('Command not found')
     return results[0]['value']

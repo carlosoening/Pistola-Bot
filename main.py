@@ -19,14 +19,19 @@ async def on_message(message):
     print(message.content)
 
     if (message.content.startswith('$add')):
-      message_split = message.content.split(' ')
-      command = message_split[1]
-      value = message_split[2]
-      print(message_split)
-      insert_return = db.insert(command, value)
-      await message.channel.send(insert_return)
-      return
-    
+      if (message.author.guild_permissions.administrator):  
+        message_split = message.content.split(' ')
+        command = message_split[1]
+        value = message_split[2]
+        if (len(command) == 0 or len(value) == 0):
+          await message.channel.send('Invalid command')
+          return
+        insert_return = db.insert(command, value)
+        await message.channel.send(insert_return)
+        return
+      else:
+        await message.channel.send('You do not have permission to use this command')
+        return
     await message.channel.send(db.get(message.content))
 
 client.run(config('DISCORD_TOKEN'))
