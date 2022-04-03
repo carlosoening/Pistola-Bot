@@ -1,5 +1,4 @@
 import discord
-from utils import checkKey
 from decouple import config
 import db
 

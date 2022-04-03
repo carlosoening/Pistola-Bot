@@ -1,5 +1,6 @@
 from tinydb import TinyDB, Query
 import os
+from utils import sanitizeCommand
 
 if not os.path.exists('database'):
     os.makedirs('database')
@@ -12,8 +13,7 @@ def init():
     insert('$bomdia', 'Bom dia é o caralho')
 
 def insert(command, value):
-    if (command.startswith('$') == False):
-        command = '$' + command
+    command = sanitizeCommand(command)
     result = db.search(Query().command == command)
     if (result == []):
         db.insert({'command': command, 'value': value})
@@ -22,8 +22,7 @@ def insert(command, value):
         return 'Command already exists'
 
 def remove(command):
-    if (command.startswith('$') == False):
-        command = '$' + command
+    command = sanitizeCommand(command)
     result = db.search(Query().command == command)
     if (result == []):
         return 'No commands to remove'
