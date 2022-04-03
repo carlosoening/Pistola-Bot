@@ -7,11 +7,9 @@ if not os.path.exists('database'):
 db = TinyDB('database/db.json')
 
 def init():
-    if (db.all() != []):
-        clearAll()
-    db.insert({ 'command': '$hello', 'value': 'Hello!' })
-    db.insert({ 'command': '$test', 'value': 'Why are you testing me?' })
-    db.insert({ 'command': '$bomdia', 'value': 'Bom dia é o caralho' })
+    insert('$hello', 'Hello!')
+    insert('$test', 'Why are you testing me?')
+    insert('$bomdia', 'Bom dia é o caralho')
 
 def insert(command, value):
     if (command.startswith('$') == False):
@@ -24,7 +22,13 @@ def insert(command, value):
         return 'Command already exists'
 
 def remove(command):
+    if (command.startswith('$') == False):
+        command = '$' + command
+    result = db.search(Query().command == command)
+    if (result == []):
+        return 'No commands to remove'
     db.remove(Query().command == command)
+    return 'Command removed!'
 
 def get(command): 
     results = db.search(Query().command == command)
