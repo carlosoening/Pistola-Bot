@@ -16,6 +16,8 @@ def insert(command, value):
     command = sanitizeCommand(command)
     result = db.search(Query().command == command)
     if (result == []):
+        command = command.strip()
+        value = value.strip()
         db.insert({'command': command, 'value': value})
         return 'New command added!'
     else:

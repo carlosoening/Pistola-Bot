@@ -4,6 +4,7 @@ def checkKey(dict, key):
   return False
 
 def sanitizeCommand(command):
+  command = command.strip()
   if (command.startswith('$') == False):
     command = '$' + command
   return command
