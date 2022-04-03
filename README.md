@@ -1,4 +1,4 @@
-# Encourage Bot
+# Pistola Bot
 
 ## Introduction
 
