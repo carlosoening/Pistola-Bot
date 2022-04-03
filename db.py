@@ -1,4 +1,8 @@
 from tinydb import TinyDB, Query
+import os
+
+if not os.path.exists('database'):
+    os.makedirs('database')
 
 db = TinyDB('database/db.json')
 
@@ -18,6 +22,9 @@ def insert(command, value):
         return 'New command added!'
     else:
         return 'Command already exists'
+
+def remove(command):
+    db.remove(Query().command == command)
 
 def get(command): 
     results = db.search(Query().command == command)
