@@ -2,8 +2,9 @@ import discord
 from decouple import config
 import db
 
-client = discord.Client()
 db.init()
+
+client = discord.Client()
 
 @client.event
 async def on_ready():
@@ -25,7 +26,7 @@ async def on_message(message):
         if (len(command) == 0 or len(value) == 0):
           await message.channel.send('Invalid command')
           return
-        insert_return = db.insert(command, value)
+        insert_return = db.insert(message.guild.id, command, value)
         await message.channel.send(insert_return)
         return
       else:
@@ -38,10 +39,12 @@ async def on_message(message):
         if (len(command) == 0):
           await message.channel.send('Invalid command')
           return
-        remove_return = db.remove(command)
+        remove_return = db.remove(message.guild.id, command)
         await message.channel.send(remove_return)
         return
         
-    await message.channel.send(db.get(message.content))
+    result = db.get(message.guild.id, message.content)
+    if (result == None): return
+    await message.channel.send(result)
 
 client.run(config('DISCORD_TOKEN'))
