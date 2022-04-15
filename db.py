@@ -2,6 +2,7 @@ from tinydb import TinyDB, Query
 from decouple import config
 from utils import sanitizeCommand
 import psycopg2
+from reserved_commands import reserved_commands
 
 def init():
     conn = connect()
@@ -34,7 +35,7 @@ def insert(guild_id, command, value):
     cursor = conn.cursor()
     command = sanitizeCommand(command)
     command = command.strip()
-    if (command == '$play'):
+    if (command in reserved_commands):
         return 'Command not allowed'
     value = value.strip()
     result = get(guild_id, command)

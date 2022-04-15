@@ -51,7 +51,7 @@ async def stop(ctx):
   voice = get(client.voice_clients, guild=ctx.guild)
   if (voice != None):
     voice.stop()
-    await voice.disconnect()
+    return
 
 # Handles LEAVE audio bot command
 @client.command(pass_context = True)
@@ -59,6 +59,7 @@ async def leave(ctx):
   voice = get(client.voice_clients, guild=ctx.guild)
   if (voice != None):
     await voice.disconnect()
+    return
 
 # Handles ADD command
 @client.command(pass_context = True)
