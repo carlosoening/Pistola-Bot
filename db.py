@@ -1,11 +1,7 @@
 from tinydb import TinyDB, Query
-import os
 from decouple import config
 from utils import sanitizeCommand
 import psycopg2
-
-if not os.path.exists('database'):
-    os.makedirs('database')
 
 def init():
     conn = connect()
@@ -38,6 +34,8 @@ def insert(guild_id, command, value):
     cursor = conn.cursor()
     command = sanitizeCommand(command)
     command = command.strip()
+    if (command == '$play'):
+        return 'Command not allowed'
     value = value.strip()
     result = get(guild_id, command)
     if (result != None):
