@@ -5,7 +5,8 @@ from discord.utils import get
 from decouple import config
 import db
 import youtube_dl
-from reserved_commands import reserved_commands
+from reserved_commands import RESERVED_COMMANDS
+
 db.init()
 
 client = commands.Bot(command_prefix='$')
@@ -51,7 +52,7 @@ async def stop(ctx):
   voice = get(client.voice_clients, guild=ctx.guild)
   if (voice != None):
     voice.stop()
-    return
+  return
 
 # Handles LEAVE audio bot command
 @client.command(pass_context = True)
@@ -59,7 +60,7 @@ async def leave(ctx):
   voice = get(client.voice_clients, guild=ctx.guild)
   if (voice != None):
     await voice.disconnect()
-    return
+  return
 
 # Handles ADD command
 @client.command(pass_context = True)
@@ -73,10 +74,9 @@ async def add(ctx):
       return
     insert_return = db.insert(ctx.message.guild.id, command, value)
     await ctx.send(insert_return)
-    return
   else:
     await ctx.send('You do not have permission to use this command')
-    return
+  return
 
 # Handles REMOVE command
 @client.command(pass_context = True)
@@ -91,19 +91,16 @@ async def remove(ctx):
     await ctx.send(remove_return)
     return
 
+# Handles users custom commands
 @client.event
 async def on_message(message):
   if (message.author == client.user):
     return
-  
   if (message.content.startswith('$')):
-
-    if (message.content.startswith(reserved_commands)):
+    if (message.content.startswith(RESERVED_COMMANDS)):
       await client.process_commands(message)
       return
-
     print(message.content)
-
     result = db.get(message.guild.id, message.content)
     if (result == None): return
     await message.channel.send(result)

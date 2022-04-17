@@ -1,4 +1,4 @@
-reserved_commands = (
+RESERVED_COMMANDS = (
   '$play', 
   '$stop',
   '$add',
