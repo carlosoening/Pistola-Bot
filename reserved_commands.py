@@ -4,4 +4,5 @@ RESERVED_COMMANDS = (
   '$add',
   '$remove',
   '$leave',
+  '$join',
 )
