@@ -1,3 +1,4 @@
+import sys
 import discord
 from discord import FFmpegPCMAudio
 from discord.ext import commands
@@ -7,7 +8,11 @@ import db
 import youtube_dl
 from reserved_commands import RESERVED_COMMANDS
 
-db.init()
+def main():
+  if (len(sys.argv) > 0):
+    if ('nodb' not in sys.argv):
+      db.init()
+    client.run(config('DISCORD_TOKEN'))
 
 client = commands.Bot(command_prefix='$')
 
@@ -105,4 +110,5 @@ async def on_message(message):
     if (result == None): return
     await message.channel.send(result)
 
-client.run(config('DISCORD_TOKEN'))
+if (__name__ == '__main__'):
+  main()
