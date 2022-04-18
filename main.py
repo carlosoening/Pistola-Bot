@@ -8,12 +8,6 @@ import db
 import youtube_dl
 from reserved_commands import RESERVED_COMMANDS
 
-def main():
-  if (len(sys.argv) > 0):
-    if ('nodb' not in sys.argv):
-      db.init()
-    client.run(config('DISCORD_TOKEN'))
-
 client = commands.Bot(command_prefix='$')
 
 @client.event
@@ -109,6 +103,12 @@ async def on_message(message):
     result = db.get(message.guild.id, message.content)
     if (result == None): return
     await message.channel.send(result)
+
+def main():
+  if (len(sys.argv) > 0):
+    if ('nodb' not in sys.argv):
+      db.init()
+    client.run(config('DISCORD_TOKEN'))
 
 if (__name__ == '__main__'):
   main()
