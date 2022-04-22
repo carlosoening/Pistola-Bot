@@ -1,4 +1,3 @@
-from tinydb import TinyDB, Query
 from decouple import config
 from utils import sanitize_command
 import psycopg2
