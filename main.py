@@ -14,9 +14,11 @@ client = commands.Bot(command_prefix='$')
 async def on_ready():
   print('We have logged in as {0.user}'.format(client))
    
-# Handles PLAY an audio in a voice channel command
 @client.command(pass_context = True)
-async def play(ctx, video_url:str):
+async def play(ctx, video_url: str):
+  """
+  Handles PLAY an audio in a voice channel command
+  """
   if (ctx.author.voice == None):
     await ctx.channel.send("Tu não tá num canal de voz seu animal")
     return
@@ -45,25 +47,32 @@ async def play(ctx, video_url:str):
     await ctx.send("Already playing song")
     return
 
-# Handles STOP audio bot command
 @client.command(pass_context = True)
 async def stop(ctx):
+  """
+  Handles STOP audio bot command
+  """
+  print(ctx)
   voice = get(client.voice_clients, guild=ctx.guild)
   if (voice != None):
     voice.stop()
   return
 
-# Handles LEAVE audio bot command
 @client.command(pass_context = True)
 async def leave(ctx):
+  """
+  Handles LEAVE audio bot command  
+  """
   voice = get(client.voice_clients, guild=ctx.guild)
   if (voice != None):
     await voice.disconnect()
   return
 
-# Handles ADD command
 @client.command(pass_context = True)
 async def add(ctx):
+  """
+  Handles ADD command
+  """
   if (ctx.message.author.guild_permissions.administrator):  
     message_split = ctx.message.content.split(' ', 2)
     command = message_split[1]
@@ -77,9 +86,11 @@ async def add(ctx):
     await ctx.send('You do not have permission to use this command')
   return
 
-# Handles REMOVE command
 @client.command(pass_context = True)
 async def remove(ctx):
+  """
+  Handles REMOVE command
+  """
   if (ctx.message.author.guild_permissions.administrator):
     message_split = ctx.message.content.split(' ')
     command = message_split[1]
@@ -90,9 +101,11 @@ async def remove(ctx):
     await ctx.send(remove_return)
     return
 
-# Handles users custom commands
 @client.event
 async def on_message(message):
+  """
+  Handles users custom commands
+  """
   if (message.author == client.user):
     return
   if (message.content.startswith('$')):

@@ -1,11 +1,13 @@
 from tinydb import TinyDB, Query
 from decouple import config
-from utils import sanitizeCommand
+from utils import sanitize_command
 import psycopg2
 from reserved_commands import RESERVED_COMMANDS
 
-# Creates the table if it doesn't exist at program start
-def init():
+def init() -> None:
+  """
+  Creates the table if it doesn't exist at program start
+  """
   conn = connect()
   cursor = conn.cursor()
   cursor.execute(
@@ -23,8 +25,10 @@ def init():
   conn.commit()
   conn.close()
 
-# Creates the connection to the database
-def connect():
+def connect() -> psycopg2.connection:
+  """
+  Creates the connection to the database
+  """
   return psycopg2.connect(
     host=config('DB_HOST'),
     port=config('DB_PORT'),
@@ -32,11 +36,13 @@ def connect():
     user=config('DB_USER'),
     password=config('DB_PASSWORD'))
 
-# Inserts a new command to the database
-def insert(guild_id, command, value):
+def insert(guild_id: str, command: str, value: str) -> str:
+  """
+  Inserts a new command to the database
+  """
   conn = connect()
   cursor = conn.cursor()
-  command = sanitizeCommand(command)
+  command = sanitize_command(command)
   command = command.strip()
   if (command in RESERVED_COMMANDS):
     return 'Command not allowed'
@@ -56,11 +62,13 @@ def insert(guild_id, command, value):
     raise Exception(error)
   return 'New command added!'
 
-# Removes a command from the database
-def remove(guild_id, command):
+def remove(guild_id: str, command: str) -> str:
+  """
+  Removes a command from the database
+  """
   conn = connect()
   cursor = conn.cursor()
-  command = sanitizeCommand(command)
+  command = sanitize_command(command)
   sql = F"DELETE FROM command WHERE guild_id = '{guild_id}' AND command = '{command}'"
   try:
     cursor.execute(sql)
@@ -73,11 +81,13 @@ def remove(guild_id, command):
     return 'No commands to remove'
   return 'Command removed!'
 
-# Gets the first command matched from the database
-def get(guild_id, command):
+def get(guild_id: str, command: str) -> str:
+  """
+  Gets the first command matched from the database
+  """
   conn = connect()
   cursor = conn.cursor()
-  command = sanitizeCommand(command)
+  command = sanitize_command(command)
   sql = F"SELECT value FROM command WHERE guild_id = '{guild_id}' AND command = '{command}'"
   cursor.execute(sql)
   res = cursor.fetchone()
