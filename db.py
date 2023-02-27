@@ -24,7 +24,7 @@ def init() -> None:
   conn.commit()
   conn.close()
 
-def connect() -> psycopg2.connection:
+def connect():
   """
   Creates the connection to the database
   """

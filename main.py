@@ -1,5 +1,5 @@
 import sys
-from discord import FFmpegPCMAudio
+from discord import FFmpegPCMAudio, Intents
 from discord.ext import commands
 from discord.utils import get
 from decouple import config
@@ -7,7 +7,9 @@ import db
 import youtube_dl
 from reserved_commands import RESERVED_COMMANDS
 
-client = commands.Bot(command_prefix='$')
+intents = Intents.default()
+intents.message_content = True
+client = commands.Bot(command_prefix='$', intents=intents)
 
 @client.event
 async def on_ready():
