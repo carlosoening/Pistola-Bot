@@ -13,10 +13,12 @@ You can also use it to play an audio from a youtube video in a voice channel usi
 The following modules were used in this project:
 
 * [discord](https://pypi.org/project/discord.py/) - A Python Discord API that facilitates the integration with Discord
-* [tinydb](https://tinydb.readthedocs.io/en/latest/) - A document oriented database to store data in JSON file
+* [psycopg2](https://www.psycopg.org/docs/) - A PostgreSQL database adapter library for Python
 * [youtube_dl](https://youtube-dl.org/) - An open source download manager library for Youtube video and audio
 
 ## Setup
+
+Install Python 3.x if you haven't done that yet;
 
 You will need to install some python modules to be able to run the project. Run the following commands to install them:
 
@@ -27,3 +29,18 @@ You will need to install some python modules to be able to run the project. Run 
 * pip install psycopg2
 
 If you want to use the playing music feature, you will need to [install the FFMPEG software on your machine](https://phoenixnap.com/kb/ffmpeg-windows). 
+
+### Configuration file
+
+You will need to create a `.env` file on the root of the project folder with the following content:
+
+```
+DISCORD_TOKEN=<discord_token>
+DB_HOST=<host>
+DB_PORT=<port>
+DB_NAME=<database_name>
+DB_USER=<username>
+DB_PASSWORD=<password>
+```
+
+Finally, to run the project you just need to run the following command: `python main.py`
