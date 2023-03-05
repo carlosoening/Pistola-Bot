@@ -5,4 +5,5 @@ RESERVED_COMMANDS = (
   '$remove',
   '$leave',
   '$join',
+  '$sheet'
 )

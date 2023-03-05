@@ -6,6 +6,7 @@ from decouple import config
 import db
 import youtube_dl
 from reserved_commands import RESERVED_COMMANDS
+import controller.sheetsAccess as sheetsAccess
 
 intents = Intents.default()
 intents.message_content = True
@@ -117,6 +118,14 @@ async def on_message(message):
     result = db.get(message.guild.id, message.content)
     if (result == None): return
     await message.channel.send(result)
+
+@client.command(pass_context = True)
+async def sheet(ctx):
+  """
+  Handles connect to Google sheets
+  """
+  sheetsAccess.infoSheets(config('DB_SHEET_ID'))
+  return
 
 def main():
   if (len(sys.argv) > 0):
