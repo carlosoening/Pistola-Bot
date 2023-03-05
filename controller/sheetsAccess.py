@@ -1,10 +1,9 @@
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
-import tkinter as tk
 
-def infoSheets():
+def infoSheets(sheet_id: str):
 
-    SPREADSHEET_ID = '[SHEET ID HERE]'
+    SPREADSHEET_ID = sheet_id
 
     scope = ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive']
     creds = ServiceAccountCredentials.from_json_keyfile_name('credentials.json', scope)

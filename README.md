@@ -49,6 +49,6 @@ DB_PASSWORD=<password>
 
 ### Configuration Google API
 
-You will need create a service account in Google Clound Plataform and download de JSON file with the credentials and add in project. Be sure the file name is "credentials.json".
+You will need to create a [service account](https://cloud.google.com/iam/docs/keys-create-delete#creating) in Google Cloud Plataform, download the JSON file with the credentials and add it to the project folder. Be sure the file name is "credentials.json".
 
 Finally, to run the project you just need to run the following command: `python main.py`

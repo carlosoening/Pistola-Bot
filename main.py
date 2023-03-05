@@ -6,7 +6,7 @@ from decouple import config
 import db
 import youtube_dl
 from reserved_commands import RESERVED_COMMANDS
-import controller.sheetsAcess as sheetsAcess
+import controller.sheetsAccess as sheetsAccess
 
 intents = Intents.default()
 intents.message_content = True
@@ -124,7 +124,7 @@ async def sheet(ctx):
   """
   Handles connect to Google sheets
   """
-  sheetsAcess.infoSheets()
+  sheetsAccess.infoSheets(config('DB_SHEET_ID'))
   return
 
 def main():
