@@ -28,6 +28,10 @@ You will need to install some python modules to be able to run the project. Run 
 * pip install youtube_dl
 * pip install psycopg2
 
+-- For Google API
+* pip install gspread
+* pip install oauth2client
+
 If you want to use the playing music feature, you will need to [install the FFMPEG software on your machine](https://phoenixnap.com/kb/ffmpeg-windows). 
 
 ### Configuration file
@@ -42,5 +46,9 @@ DB_NAME=<database_name>
 DB_USER=<username>
 DB_PASSWORD=<password>
 ```
+
+### Configuration Google API
+
+You will need create a service account in Google Clound Plataform and download de JSON file with the credentials and add in project. Be sure the file name is "credentials.json".
 
 Finally, to run the project you just need to run the following command: `python main.py`
