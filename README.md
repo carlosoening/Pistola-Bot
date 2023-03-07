@@ -45,6 +45,9 @@ DB_PORT=<port>
 DB_NAME=<database_name>
 DB_USER=<username>
 DB_PASSWORD=<password>
+
+--- GoogleAPI config
+SPREADSHEET_ID=<id_spreadsheet>
 ```
 
 ### Configuration Google API

@@ -126,7 +126,7 @@ async def sheet(ctx):
   """
   Handles connect to Google sheets
   """
-  sheetsAccess.infoSheets(config('DB_SHEET_ID'))
+  sheetsAccess.infoSheets(config('SPREADSHEET_ID'))
   return
 
 @client.command(pass_context = True)
