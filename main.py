@@ -1,5 +1,5 @@
 import sys
-from discord import FFmpegPCMAudio, Intents
+from discord import FFmpegPCMAudio, Intents, File
 from discord.ext import commands
 from discord.utils import get
 from decouple import config
@@ -7,6 +7,8 @@ import db
 import youtube_dl
 from reserved_commands import RESERVED_COMMANDS
 import controller.sheetsAccess as sheetsAccess
+import controller.confluenceAccess as confluenceAccess
+import os
 
 intents = Intents.default()
 intents.message_content = True
@@ -125,6 +127,23 @@ async def sheet(ctx):
   Handles connect to Google sheets
   """
   sheetsAccess.infoSheets(config('DB_SHEET_ID'))
+  return
+
+@client.command(pass_context = True)
+async def confluence(ctx):
+  message_split = ctx.message.content.split(' ')
+  keyword = message_split[1]
+  confluence = confluenceAccess.getConfluenceConnection()
+  pages = confluence.cql('text ~ "' + keyword + '" and type = "page"')
+  for result in pages['results']:
+    #content = confluence.export_page(result['content']['id'])
+    #file_name = result['content']['title'] + '.pdf'
+    #file_pdf = open(file_name, 'wb')
+    #file_pdf.write(content)
+    #file_pdf.close()
+    #await ctx.send(file=File(file_name))
+    attachments = confluence.get_attachments_from_content(result['content']['id'])
+    print(attachments)
   return
 
 def main():

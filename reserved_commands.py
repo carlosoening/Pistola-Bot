@@ -5,5 +5,6 @@ RESERVED_COMMANDS = (
   '$remove',
   '$leave',
   '$join',
-  '$sheet'
+  '$sheet',
+  '$confluence',
 )
