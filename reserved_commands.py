@@ -7,4 +7,5 @@ RESERVED_COMMANDS = (
   '$join',
   '$sheet',
   '$confluence',
+  '$dc',
 )

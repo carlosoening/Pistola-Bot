@@ -9,10 +9,13 @@ from reserved_commands import RESERVED_COMMANDS
 import controller.sheetsAccess as sheetsAccess
 import controller.confluenceAccess as confluenceAccess
 import os
+from json import JSONDecodeError
 
 intents = Intents.default()
 intents.message_content = True
 client = commands.Bot(command_prefix='$', intents=intents)
+
+pages_ids = {}
 
 @client.event
 async def on_ready():
@@ -131,20 +134,52 @@ async def sheet(ctx):
 
 @client.command(pass_context = True)
 async def confluence(ctx):
+  """
+  This function searches by a keyword or sentence in the Confluence database and list the matching pages
+  """
+  global pages_ids
+  pages_ids = {}
   message_split = ctx.message.content.split(' ')
   keyword = message_split[1]
   confluence = confluenceAccess.getConfluenceConnection()
   pages = confluence.cql('text ~ "' + keyword + '" and type = "page"')
+  titles = ''
+  index = 1
   for result in pages['results']:
-    #content = confluence.export_page(result['content']['id'])
-    #file_name = result['content']['title'] + '.pdf'
-    #file_pdf = open(file_name, 'wb')
-    #file_pdf.write(content)
-    #file_pdf.close()
-    #await ctx.send(file=File(file_name))
-    attachments = confluence.get_attachments_from_content(result['content']['id'])
-    print(attachments)
+    titles += F'{index}' + ' - ' + result['content']['title'] + '\n'
+    pages_ids.update({F'{index}': result['content']['id']})
+    index = index + 1
+  print(pages_ids)
+  await ctx.send(titles)
   return
+
+@client.command(pass_context = True)
+async def dc(ctx):
+  """
+  This function downloads a PDF from the Confluence database its ID
+  """
+  message_split = ctx.message.content.split(' ')
+  index = message_split[1]
+  global pages_ids
+  if (index.isnumeric() == False):
+    await ctx.send('O índice informado não é válido!')
+    return
+  id = pages_ids.get(index)
+  if (id == None):
+    await ctx.send('O índice informado não foi encontrado!')
+    return
+  confluence = confluenceAccess.getConfluenceConnection()
+  page = confluence.get_page_by_id(id)
+  content = confluence.export_page(id)
+  file_name = page['title'] + '.pdf'
+  file_pdf = open(file_name, 'wb')
+  file_pdf.write(content)
+  file_pdf.close()
+  await ctx.send(file=File(file_name))
+  os.remove(file_name)
+  pages_ids = {}
+  return
+
 
 def main():
   if (len(sys.argv) > 0):
