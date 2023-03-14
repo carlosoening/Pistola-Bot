@@ -168,6 +168,7 @@ async def dc(ctx):
   if (id == None):
     await ctx.send('O índice informado não foi encontrado!')
     return
+  await ctx.send('O arquivo está sendo preparado, por favor aguarde...')
   confluence = confluenceAccess.getConfluenceConnection()
   page = confluence.get_page_by_id(id)
   content = confluence.export_page(id)
@@ -175,6 +176,10 @@ async def dc(ctx):
   file_pdf = open(file_name, 'wb')
   file_pdf.write(content)
   file_pdf.close()
+  async for message in ctx.channel.history(limit=2):
+    if message.author == client.user:
+      await message.delete()
+      break
   await ctx.send(file=File(file_name))
   os.remove(file_name)
   pages_ids = {}
