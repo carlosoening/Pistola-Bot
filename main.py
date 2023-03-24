@@ -10,6 +10,7 @@ import controller.sheetsAccess as sheetsAccess
 import controller.confluenceAccess as confluenceAccess
 import os
 from json import JSONDecodeError
+import requests
 
 intents = Intents.default()
 intents.message_content = True
@@ -142,7 +143,7 @@ async def confluence(ctx):
   message_split = ctx.message.content.split(' ')
   keyword = message_split[1]
   confluence = confluenceAccess.getConfluenceConnection()
-  pages = confluence.cql('text ~ "' + keyword + '" and type = "page"')
+  pages = confluence.cql('(title ~ "' + keyword + '" OR text ~ "' + keyword + '") AND type = "page"')
   titles = ''
   index = 1
   for result in pages['results']:
@@ -182,6 +183,20 @@ async def dc(ctx):
       break
   await ctx.send(file=File(file_name))
   os.remove(file_name)
+  attachments = confluence.get_attachments_from_content(id)
+  if attachments['results']:
+    await ctx.send('Anexos do arquivo: ')
+    for result in attachments['results']:
+      att_name = result['title']
+      download_link = confluence.url + result['_links']['download']
+      r = requests.get(download_link, auth=(confluence.username, confluence.password))
+      if r.status_code == 200:
+        with open(att_name, "wb") as f:
+          for bits in r.iter_content():
+            f.write(bits)
+          f.close()
+          await ctx.send(file=File(att_name))
+          os.remove(att_name)
   pages_ids = {}
   return
 
