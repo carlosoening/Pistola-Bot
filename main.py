@@ -124,7 +124,7 @@ async def sheet(ctx):
   """
   Handles connect to Google sheets
   """
-  sheetsAccess.infoSheets(config('SPREADSHEET_ID'))
+  await ctx.send(sheetsAccess.infoSheets(config('SPREADSHEET_ID')))
   return
 
 def main():
