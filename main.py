@@ -1,15 +1,13 @@
 import sys
-from discord import FFmpegPCMAudio, Intents, File
+from discord import Intents, File
 from discord.ext import commands
 from discord.utils import get
 from decouple import config
 import db
-import youtube_dl
 from reserved_commands import RESERVED_COMMANDS
 import controller.sheetsAccess as sheetsAccess
 import controller.confluenceAccess as confluenceAccess
 import os
-from json import JSONDecodeError
 import requests
 
 intents = Intents.default()
@@ -21,60 +19,6 @@ pages_ids = {}
 @client.event
 async def on_ready():
   print('We have logged in as {0.user}'.format(client))
-   
-@client.command(pass_context = True)
-async def play(ctx, video_url: str):
-  """
-  Handles PLAY an audio in a voice channel command
-  """
-  if (ctx.author.voice == None):
-    await ctx.channel.send("Tu não tá num canal de voz seu animal")
-    return
-  channel = ctx.message.author.voice.channel
-  voice = get(client.voice_clients, guild=ctx.guild)
-  if (voice == None):
-    voice = await channel.connect()
-
-  YDL_OPTS = {
-    'format': 'bestaudio/best',
-    'noplaylist': True,
-  }
-
-  FFMPEG_OPTS = {
-    'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5',
-    'options': '-vn'
-  }
-
-  if not voice.is_playing():
-    with youtube_dl.YoutubeDL(YDL_OPTS) as ydl:
-      info = ydl.extract_info(video_url, download=False)
-    URL = info['formats'][0]['url']
-    voice.play(FFmpegPCMAudio(URL, **FFMPEG_OPTS))
-    voice.is_playing()
-  else:
-    await ctx.send("Already playing song")
-    return
-
-@client.command(pass_context = True)
-async def stop(ctx):
-  """
-  Handles STOP audio bot command
-  """
-  print(ctx)
-  voice = get(client.voice_clients, guild=ctx.guild)
-  if (voice != None):
-    voice.stop()
-  return
-
-@client.command(pass_context = True)
-async def leave(ctx):
-  """
-  Handles LEAVE audio bot command  
-  """
-  voice = get(client.voice_clients, guild=ctx.guild)
-  if (voice != None):
-    await voice.disconnect()
-  return
 
 @client.command(pass_context = True)
 async def add(ctx):
