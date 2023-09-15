@@ -157,7 +157,7 @@ async def confluence(ctx):
 @client.command(pass_context = True)
 async def dc(ctx):
   """
-  This function downloads a PDF from the Confluence database its ID
+  This function downloads a PDF from the Confluence database by its ID
   """
   message_split = ctx.message.content.split(' ')
   index = message_split[1]
