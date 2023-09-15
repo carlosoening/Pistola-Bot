@@ -8,4 +8,5 @@ RESERVED_COMMANDS = (
   '$sheet',
   '$confluence',
   '$dc',
+  '$help'
 )
